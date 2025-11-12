@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08457fde23f9fca489f2a86b9ca828aa, type: 3}
+  m_Name: VerticalDocTemplate
+  m_EditorClassIdentifier: 
+  documentName: BookTemplate
+  documentOrientation: 2
+  documentPages:
+  - {fileID: 2800000, guid: 34f780adec255154085637ec44aa4cbe, type: 3}
+  - {fileID: 2800000, guid: a11adb59f49a33c4bad0fcd70c729c28, type: 3}
+  - {fileID: 2800000, guid: a3b59ef2f53abb3459843725e687d36a, type: 3}
+  - {fileID: 2800000, guid: caa45bf9d3956564aa775023f089dd4a, type: 3}
+  - {fileID: 2800000, guid: 500afe876b9edb74f9b22d6f85bf57a3, type: 3}
+  - {fileID: 2800000, guid: d262b813c11addd4a9ff68838dfac125, type: 3}

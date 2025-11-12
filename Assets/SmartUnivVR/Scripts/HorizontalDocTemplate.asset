@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08457fde23f9fca489f2a86b9ca828aa, type: 3}
+  m_Name: HorizontalDocTemplate
+  m_EditorClassIdentifier: 
+  documentName: PresentationPowerPoint
+  documentOrientation: 1
+  documentPages:
+  - {fileID: 2800000, guid: 7b3e29572f65d0f4cac1c8f8c1fa7226, type: 3}
+  - {fileID: 2800000, guid: 091e32dc4d1fb9648a5bac015d08cb46, type: 3}
+  - {fileID: 2800000, guid: 0c05dcfebb67eab42b6f324d6b9f99e7, type: 3}
+  - {fileID: 2800000, guid: 1b296f25e7b401348a34816e6c3cbb5e, type: 3}
+  - {fileID: 2800000, guid: 720bea1d5f05c034d80344262452fe04, type: 3}
