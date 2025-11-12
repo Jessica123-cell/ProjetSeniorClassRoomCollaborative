@@ -20,19 +20,19 @@ public class NetworkMonitor : MonoBehaviour
     private void OnClientConnected(ulong clientId)
     {
         int count = NetworkManager.Singleton.ConnectedClientsList.Count;
-        Debug.Log($"Client connecté : ID={clientId} | Total joueurs = {count}");
+        Debug.Log($"Participant connecté : ID={clientId} | Total joueurs = {count}");
 
         // Affiche un message spécial si c’est un autre joueur (pas le host)
         if (NetworkManager.Singleton.IsServer)
         {
             if (clientId != NetworkManager.Singleton.LocalClientId)
-                Debug.Log($" Un nouveau joueur vient de rejoindre la session !");
+                Debug.Log($" Un nouveau participant vient de rejoindre la session !");
         }
     }
 
     private void OnClientDisconnected(ulong clientId)
     {
         int count = NetworkManager.Singleton.ConnectedClientsList.Count;
-        Debug.Log($"Client déconnecté : ID={clientId} | Restants = {count}");
+        Debug.Log($"participant déconnecté : ID={clientId} | Restants = {count}");
     }
 }

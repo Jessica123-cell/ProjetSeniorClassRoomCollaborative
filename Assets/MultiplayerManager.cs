@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Unity.Netcode;
-using Unity.Services.Core;
 using Unity.Services.Authentication;
+using Unity.Services.Core;
 using Unity.Services.Multiplayer;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -107,10 +108,10 @@ public class MultiplayerManager : MonoBehaviour
             Debug.Log($" Session créée : {hostSession.Id}");
             Debug.Log($"Code de session : {hostSession.Code}");
             Debug.Log($" Nom : {hostSession.Name}");
-            Debug.Log($"Joueurs max : {hostSession.MaxPlayers}");
+            Debug.Log($"Partcipants max : {hostSession.MaxPlayers}");
 
             NetworkManager.Singleton.StartHost();
-            Debug.Log("HOST LANCÉ ! En attente de joueurs...");
+            Debug.Log("HOST LANCÉ ! En attente de partcipants...");
         }
         catch (System.Exception e)
         {
@@ -168,7 +169,7 @@ public class MultiplayerManager : MonoBehaviour
             Debug.Log($"Session rejointe : {currentSession.Id}");
 
             NetworkManager.Singleton.StartClient();
-            Debug.Log("CLIENT CONNECTÉ !");
+            Debug.Log("PARTICIPANT CONNECTÉ !");
         }
         catch (System.Exception e)
         {
@@ -181,17 +182,30 @@ public class MultiplayerManager : MonoBehaviour
     // ✅ Nettoyage propre
     private async void OnDestroy()
     {
-        if (currentSession != null)
+        try
         {
-            try
+            if (currentSession != null)
             {
-                await currentSession.LeaveAsync();
-                Debug.Log(" Session quittée proprement");
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError($"Erreur en quittant : {e.Message}");
+                // Vérifie que le service n’est pas déjà en train d’être détruit
+                if (UnityServices.State == ServicesInitializationState.Initialized)
+                {
+                    await currentSession.LeaveAsync();
+                    Debug.Log(" Session quittée proprement");
+                }
+                else
+                {
+                    Debug.Log(" Services Unity déjà arrêtés, skip LeaveAsync()");
+                }
             }
         }
+        catch (ObjectDisposedException)
+        {
+            Debug.LogWarning("Tentative de quitter une session déjà fermée (ignorée)");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Erreur en quittant : {e.Message}");
+        }
     }
+
 }
