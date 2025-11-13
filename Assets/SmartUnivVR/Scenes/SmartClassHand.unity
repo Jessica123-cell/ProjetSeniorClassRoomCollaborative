@@ -1081,7 +1081,7 @@ MonoBehaviour:
   UseQuaternionSynchronization: 0
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
-  InLocalSpace: 1
+  InLocalSpace: 0
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
@@ -1104,6 +1104,14 @@ PrefabInstance:
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9065928855991340824, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1227,7 +1235,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8679826519995154921, guid: 8492d690523edc941a1a39d1798c93bc, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679826519995154921, guid: 8492d690523edc941a1a39d1798c93bc, type: 3}
       propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679826519995154921, guid: 8492d690523edc941a1a39d1798c93bc, type: 3}
+      propertyPath: m_CollisionDetection
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -1324,6 +1340,14 @@ PrefabInstance:
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9065928855991340824, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1854,16 +1878,16 @@ MonoBehaviour:
   SyncRotAngleX: 1
   SyncRotAngleY: 1
   SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
   UseQuaternionSynchronization: 0
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
-  InLocalSpace: 1
+  InLocalSpace: 0
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
@@ -1922,6 +1946,14 @@ PrefabInstance:
     - target: {fileID: 6186494263547506647, guid: 29b3cd5b2bbcbe94b868885d6ad118ae, type: 3}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6186494263547506647, guid: 29b3cd5b2bbcbe94b868885d6ad118ae, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6186494263547506647, guid: 29b3cd5b2bbcbe94b868885d6ad118ae, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6223179439757076576, guid: 29b3cd5b2bbcbe94b868885d6ad118ae, type: 3}
       propertyPath: m_Name
@@ -2367,7 +2399,7 @@ MonoBehaviour:
   UseQuaternionSynchronization: 0
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
-  InLocalSpace: 1
+  InLocalSpace: 0
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
@@ -2938,7 +2970,7 @@ MonoBehaviour:
   UseQuaternionSynchronization: 0
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
-  InLocalSpace: 1
+  InLocalSpace: 0
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
@@ -3100,6 +3132,14 @@ PrefabInstance:
     - target: {fileID: 7812889851479609662, guid: 430ec275865c7a4499a6f521d7369aff, type: 3}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812889851479609662, guid: 430ec275865c7a4499a6f521d7369aff, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812889851479609662, guid: 430ec275865c7a4499a6f521d7369aff, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7349605714934534396, guid: 430ec275865c7a4499a6f521d7369aff, type: 3}
@@ -3333,7 +3373,7 @@ MonoBehaviour:
   UseQuaternionSynchronization: 0
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
-  InLocalSpace: 1
+  InLocalSpace: 0
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
@@ -3738,7 +3778,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8679826519995154921, guid: bc029b80d6e452544871a7f35d86a032, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679826519995154921, guid: bc029b80d6e452544871a7f35d86a032, type: 3}
       propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679826519995154921, guid: bc029b80d6e452544871a7f35d86a032, type: 3}
+      propertyPath: m_CollisionDetection
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -3837,6 +3885,14 @@ PrefabInstance:
     - target: {fileID: 9160321152421653418, guid: ca3920c15e2f4a6468e358111ad59686, type: 3}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9160321152421653418, guid: ca3920c15e2f4a6468e358111ad59686, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9160321152421653418, guid: ca3920c15e2f4a6468e358111ad59686, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1927015466268578466, guid: ca3920c15e2f4a6468e358111ad59686, type: 3}
@@ -3952,7 +4008,7 @@ MonoBehaviour:
   UseQuaternionSynchronization: 0
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
-  InLocalSpace: 1
+  InLocalSpace: 0
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
@@ -4556,7 +4612,7 @@ MonoBehaviour:
   UseQuaternionSynchronization: 0
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
-  InLocalSpace: 1
+  InLocalSpace: 0
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
@@ -5252,7 +5308,7 @@ MonoBehaviour:
   UseQuaternionSynchronization: 0
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
-  InLocalSpace: 1
+  InLocalSpace: 0
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
@@ -5411,6 +5467,14 @@ PrefabInstance:
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9065928855991340824, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5718,7 +5782,7 @@ MonoBehaviour:
   UseQuaternionSynchronization: 0
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
-  InLocalSpace: 1
+  InLocalSpace: 0
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
@@ -5741,6 +5805,14 @@ PrefabInstance:
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9065928855991340824, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7241,6 +7313,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1948693200}
+    - target: {fileID: 3551227852290231092, guid: c5573085f01a90348a0c78d9a05e2c20, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 3575641244277188106, guid: c5573085f01a90348a0c78d9a05e2c20, type: 3}
       propertyPath: m_Camera
       value: 
