@@ -20,7 +20,7 @@ public class MultiplayerManager : MonoBehaviour
     {
         Debug.Log(" Vérification du réseau avant initialisation...");
 
-        // ✅ Vérifie la connectivité Internet avant tout
+        //  Vérifie la connectivité Internet avant tout
         if (!await WaitForInternet())
         {
             Debug.LogError(" Aucun accès Internet détecté. Impossible d'initialiser Unity Services.");
@@ -41,7 +41,7 @@ public class MultiplayerManager : MonoBehaviour
         }
     }
 
-    // ✅ Vérifie que le casque a Internet avant de lancer Unity Services
+    //  Vérifie que le casque a Internet avant de lancer Unity Services
     private async Task<bool> WaitForInternet()
     {
         for (int i = 0; i < 5; i++)
@@ -66,7 +66,7 @@ public class MultiplayerManager : MonoBehaviour
         return false;
     }
 
-    // ✅ Initialise les services Unity
+    //  Initialise les services Unity
     private async Task InitializeUGS()
     {
         Debug.Log("Initialisation Unity Services...");
@@ -88,7 +88,7 @@ public class MultiplayerManager : MonoBehaviour
         }
     }
 
-    // ✅ Mode HOST
+    //  Mode HOST
     private async Task StartHostAsync()
     {
         try
@@ -119,7 +119,7 @@ public class MultiplayerManager : MonoBehaviour
         }
     }
 
-    // ✅ Mode CLIENT
+    // Mode CLIENT
     private async Task StartClientAsync()
     {
         try
@@ -179,7 +179,7 @@ public class MultiplayerManager : MonoBehaviour
         }
     }
 
-    // ✅ Nettoyage propre
+    //  Nettoyage propre
     private async void OnDestroy()
     {
         try

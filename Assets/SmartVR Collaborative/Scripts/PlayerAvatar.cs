@@ -28,7 +28,7 @@ public class PlayerAvatar : NetworkBehaviour
             vrRight = FindXRController("Right Controller", "RightHand Controller", "RightHand", "RightHand Device");
 
             if (vrLeft == null || vrRight == null)
-                Debug.LogWarning("⚠️ Impossible de trouver les contrôleurs VR dans la scène !");
+                Debug.LogWarning("Impossible de trouver les contrôleurs VR dans la scène !");
             else
                 Debug.Log($" Contrôleurs trouvés : Gauche = {vrLeft.name}, Droite = {vrRight.name}");
         }
