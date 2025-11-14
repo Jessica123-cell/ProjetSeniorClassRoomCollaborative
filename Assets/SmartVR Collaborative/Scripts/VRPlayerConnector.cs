@@ -1,36 +1,56 @@
-﻿using Unity.Netcode;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.XR;
+using System.Collections.Generic;
 
-public class VRPlayerConnector : NetworkBehaviour
+public class VRPlayerConnector : MonoBehaviour
 {
-    public override void OnNetworkSpawn()
+    public Transform globalForwardReference;
+
+    private void Start()
     {
-        Debug.Log("VRPlayerConnector Spawn -- IsOwner=" + IsOwner + " / IsServer=" + IsServer);
+        // délai pour que le casque initialise le tracking
+        Invoke(nameof(CalibratePlayer), 0.3f);
+    }
 
-        if (!IsOwner || IsServer)
+    private void CalibratePlayer()
+    {
+        FixHeight();
+        RecenterXR();
+        AlignYaw();
+    }
+
+    private void FixHeight()
+    {
+        Transform cameraOffset = transform.Find("Camera Offset");
+        if (cameraOffset != null)
         {
-            Debug.Log("VRPlayerConnector ignoré (pas owner ou c'est le serveur).");
-            return;
+            cameraOffset.localPosition = new Vector3(0, 1.6f, 0);
+            Debug.Log("Camera height normalized to 1.6m");
         }
+    }
 
-        Transform xrOrigin = transform;
+    private void RecenterXR()
+    {
+        var subsystems = new List<XRInputSubsystem>();
+        SubsystemManager.GetSubsystems(subsystems);
 
-        Debug.Log("Position XR détectée : " + xrOrigin.position);
+        if (subsystems.Count > 0)
+            subsystems[0].TryRecenter();
+    }
 
-        PlayerSpawner spawner = Object.FindFirstObjectByType<PlayerSpawner>();
+    private void AlignYaw()
+    {
+        if (globalForwardReference == null) return;
 
-        if (spawner == null)
-        {
-            Debug.LogError("VRPlayerConnector : PlayerSpawner introuvable dans la scène !");
-            return;
-        }
+        Vector3 target = globalForwardReference.forward;
+        target.y = 0;
+        target.Normalize();
 
-        Debug.Log("Envoi du RPC avec la position XR…");
+        Vector3 current = Camera.main.transform.forward;
+        current.y = 0;
+        current.Normalize();
 
-        spawner.RequestSpawnAvatarRpc(
-            xrOrigin.position,
-            xrOrigin.rotation,
-            OwnerClientId
-        );
+        float angle = Vector3.SignedAngle(current, target, Vector3.up);
+        transform.Rotate(0, angle, 0);
     }
 }
