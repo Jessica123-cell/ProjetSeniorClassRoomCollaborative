@@ -19,11 +19,11 @@ public class PlayerSpawner : NetworkBehaviour
         // Ne pas spawn d'avatar pour le Host PC
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
-            Debug.Log("Host détecté → aucun avatar généré.");
+            Debug.Log("Host détecté donc aucun avatar généré.");
             return;
         }
 
-        Debug.Log($"Client {clientId} connecté → spawn à PlayerSpawnPoint.");
+        Debug.Log($"Participant {clientId} connecté.");
 
         // --- SPAWN DU JOUEUR ---
         GameObject avatar = Instantiate(

@@ -65,4 +65,4 @@ public class GrabbableObject : NetworkBehaviour
     {
         NetworkObject.RemoveOwnership();
     }
-}
+}
