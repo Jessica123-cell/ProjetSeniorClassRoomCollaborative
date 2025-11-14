@@ -5,6 +5,13 @@ public class GrabbableObject : NetworkBehaviour
 {
     private Rigidbody rb;
 
+    // Verrou réseau (anti-double grab)
+    private NetworkVariable<bool> isLocked = new NetworkVariable<bool>(
+        false,                                     // initial value
+        NetworkVariableReadPermission.Everyone,    // everyone can read
+        NetworkVariableWritePermission.Server      // only server writes
+    );
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -13,56 +20,72 @@ public class GrabbableObject : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        SetNoPhysics();
+        ApplyRestState();
     }
 
     public override void OnGainedOwnership()
     {
         base.OnGainedOwnership();
-        SetNoPhysics();
+        ApplyGrabState();
     }
 
     public override void OnLostOwnership()
     {
         base.OnLostOwnership();
-        SetNoPhysics();
+        ApplyRestState();
     }
 
-    private void SetNoPhysics()
+    // --- ETATS PHYSIQUES ---
+
+    private void ApplyRestState()
     {
-        // L’objet ne tombe jamais, reste stable dans l’air,
-        // et ne flotte pas au spawn
         rb.isKinematic = true;
         rb.useGravity = false;
     }
 
-    // Appelé lorsque le joueur attrape l'objet
+    private void ApplyGrabState()
+    {
+        rb.isKinematic = false;
+        rb.useGravity = false;
+    }
+
+    // --- EVENEMENTS LOCAUX ---
+
     public void OnGrab(ulong clientId)
     {
-        RequestOwnershipRpc(clientId);
+        TryGrabRpc(clientId);
     }
 
-    // Appelé lorsque le joueur relâche l'objet
-    // (aucune action nécessaire — l’objet reste en place)
     public void OnRelease()
     {
-        ReleaseOwnershipRpc();
+        ReleaseRpc();
     }
 
-    // Le client demande au serveur de lui donner l’ownership
+    // --- RPC SERVEUR ---
+
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    private void RequestOwnershipRpc(ulong clientId)
+    private void TryGrabRpc(ulong clientId)
     {
-        if (NetworkObject.OwnerClientId != clientId)
-        {
-            NetworkObject.ChangeOwnership(clientId);
-        }
+        // déjà pris ?
+        if (isLocked.Value)
+            return;
+
+        // verrouiller
+        isLocked.Value = true;
+
+        NetworkObject.ChangeOwnership(clientId);
+        ApplyGrabState();
     }
 
-    // Le client demande au serveur de retirer l’ownership
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    private void ReleaseOwnershipRpc()
+    private void ReleaseRpc()
     {
+        // serveur reprend
         NetworkObject.RemoveOwnership();
+
+        // déverrouiller
+        isLocked.Value = false;
+
+        ApplyRestState();
     }
-}
+}
