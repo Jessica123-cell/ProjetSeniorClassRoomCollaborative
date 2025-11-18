@@ -946,6 +946,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  VoiceAttachPoint: {fileID: 6010828125179977002}
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
 --- !u!114 &82173986874517645

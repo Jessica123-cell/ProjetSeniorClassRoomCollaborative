@@ -6262,6 +6262,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   channelName: SalleDeClasse
+  audibleDistance: 25
+  conversationalDistance: 2
+  fadeIntensity: 1
 --- !u!1 &2049911392
 GameObject:
   m_ObjectHideFlags: 0
