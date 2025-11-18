@@ -1,0 +1,108 @@
+{
+    "version": 1,
+    "name": "PaintingInput",
+    "maps": [
+        {
+            "name": "VRPainting",
+            "id": "7cba45f7-885f-4923-8400-172e957431e4",
+            "actions": [
+                {
+                    "name": "PaintAction",
+                    "type": "Button",
+                    "id": "f3421b55-5d16-4406-980f-bf7dfb520a88",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PointerPosition",
+                    "type": "Value",
+                    "id": "3e7d47ba-1fe2-4b80-bec6-4b5bc72b89ef",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "ClearAction",
+                    "type": "Button",
+                    "id": "c35e1b4e-7040-4e91-94cd-79da8766b658",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "099d9ad3-80a3-46ae-8975-37bd6d539700",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PaintAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e79c84f2-2895-4f3f-88f3-f0d9dfdf2fbe",
+                    "path": "<XRController>{RightHand}/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PaintAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "80cc10ce-2d27-4b69-88ef-7c94a6a059a1",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "43e7c851-2aa4-432a-a5be-990278637aa9",
+                    "path": "<XRController>{RightHand}/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d28f9941-4fb4-4350-b57a-985c7d6ffc8c",
+                    "path": "<keyboard>7c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClearAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a7a81dcc-cbdd-458d-a2b4-2b65654fab88",
+                    "path": "<XRController>{LeftHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClearAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
