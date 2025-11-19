@@ -36,11 +36,12 @@ public class Painters : MonoBehaviour
         cmd.SetRenderTarget(PreviewTexture);
         cmd.ClearRenderTarget(true, true, Color.black);
         cmd.SetViewProjectionMatrices(Matrix4x4.identity, Matrix4x4.identity);
-        cmd.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, PaintMat, 0, 0);
-    
+        cmd.Blit(null, PreviewTexture, PaintMat, 0);
+
+
         Graphics.ExecuteCommandBuffer(cmd);
 
-        //Preview
+        //Paint
         if (Input.GetMouseButton(0))
         {
             PaintMat.SetColor("_Color", color);
@@ -48,8 +49,11 @@ public class Painters : MonoBehaviour
 
             cmd.SetRenderTarget(PaintTexture);
             cmd.SetViewProjectionMatrices(Matrix4x4.identity, Matrix4x4.identity);
-            cmd.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, PaintMat, 0, 0);
-            
+            cmd.Blit(null, PaintTexture, PaintMat, 0);
+
+
+
+
             Graphics.ExecuteCommandBuffer(cmd);
         }
         //Clear paint

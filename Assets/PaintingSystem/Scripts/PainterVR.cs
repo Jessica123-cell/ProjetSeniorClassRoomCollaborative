@@ -50,7 +50,7 @@ public class PainterVR : MonoBehaviour
         cmd.SetRenderTarget(PreviewTexture);
         cmd.ClearRenderTarget(true, true, Color.black);
         cmd.SetViewProjectionMatrices(Matrix4x4.identity, Matrix4x4.identity);
-        cmd.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, PaintMat, 0, 0);
+        cmd.Blit(null, PreviewTexture, PaintMat, 0);
         Graphics.ExecuteCommandBuffer(cmd);
 
         // --- Lecture du trigger VR ---
@@ -64,7 +64,7 @@ public class PainterVR : MonoBehaviour
             cmd.Clear();
             cmd.SetRenderTarget(PaintTexture);
             cmd.SetViewProjectionMatrices(Matrix4x4.identity, Matrix4x4.identity);
-            cmd.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, PaintMat, 0, 0);
+            cmd.Blit(null, PaintTexture, PaintMat, 0);
             Graphics.ExecuteCommandBuffer(cmd);
         }
 

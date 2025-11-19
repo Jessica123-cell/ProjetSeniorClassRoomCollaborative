@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.InputSystem;
 using UnityEngine.XR;
 
 public class Painter : MonoBehaviour
@@ -18,7 +19,7 @@ public class Painter : MonoBehaviour
     public Material PaintMat;
     public MeshFilter Quad;
     public Color color = Color.red;
-    public Texture2D defaultCircle;
+    //public Texture2D defaultCircle;
 
     [Header("Input Actions")]
     public InputActionProperty pointerPosition;   // Valeur Vector2 (souris ou joystick)
@@ -36,7 +37,7 @@ public class Painter : MonoBehaviour
         clearAction.action.Enable();
 
 
-        Graphics.Blit(defaultCircle, PaintTexture);
+        //Graphics.Blit(defaultCircle, PaintTexture);
     }
 
     void OnDisable()
@@ -84,19 +85,54 @@ public class Painter : MonoBehaviour
         if (Physics.Raycast(raycast, out RaycastHit hitInfo))
         {
             Debug.DrawRay(raycast.origin, raycast.direction * hitInfo.distance, Color.red);
-            Vector3 localPoints = Quad.transform.InverseTransformPoint(hitInfo.point);
-            Vector2 uv = new Vector2(localPoints.x + 0.5f, localPoints.y + 0.5F);
-            
+            // verification que le rayon touche le collider
+            //Debug.Log("HIT : " + hitInfo.collider.name);
+
+            // Convertir le point hit en coordonnées locales du Quad
+            Vector3 local = Quad.transform.InverseTransformPoint(hitInfo.point);
+
+            // Normalisation en fonction de la scale du Quad
+            float uvx = (local.x / Quad.transform.localScale.x) + 0.5f;
+            float uvy = (local.y / Quad.transform.localScale.y) + 0.5f;
+
+            // UV final
+            Vector2 uv = new Vector2(uvx, uvy);
+
+
             if (hitInfo.collider != null && hitInfo.collider.tag.Equals("Canvas"))
             {
                 lineRenderer.SetPosition(0, RightHand.transform.position);
                 lineRenderer.SetPosition(1, hitInfo.point);
                 lineRenderer.enabled = true;
 
-                for (float i = 10.0f; i >= 0f; i -= 1f)
+                // Nous dessinons uniquement si le bouton est pressé
+                if (paintAction.action.ReadValue<float>() > 0.5f)
                 {
-                    DrawCanvas(Vector2.Lerp(lastMouseUV, uv, 1f / i));
+                    for (float i = 10.0f; i >= 0f; i -= 1f)
+                    {
+                        Vector2 p = Vector2.Lerp(lastMouseUV, uv, 1f / i);
+
+                        // 1. on dessine localement
+                        DrawCanvas(p);
+
+                        // 2. On synchronise aux autres via RPC
+                        if (NetworkManager.Singleton.IsConnectedClient)
+                        {
+                            GetComponent<NetworkPainter>().DrawRpc(p);
+                        }
+                    }
                 }
+
+                // Clear synchronisé
+                if (clearAction.action.ReadValue<float>() > 0.5f)
+                {
+                    ClearCanvas();
+                    if (NetworkManager.Singleton.IsConnectedClient)
+                    {
+                        GetComponent<NetworkPainter>().ClearRpc();
+                    }
+                }
+
 
                 lastMouseUV = uv;
             } else
@@ -104,9 +140,17 @@ public class Painter : MonoBehaviour
                 lineRenderer.enabled = false;
             }
         }
+
+    }
+    public void ClearCanvas()
+    {
+        cmd.Clear();
+        cmd.SetRenderTarget(PaintTexture);
+        cmd.ClearRenderTarget(true, true, Color.black);
+        Graphics.ExecuteCommandBuffer(cmd);
     }
 
-    private void DrawCanvas(Vector2 uv)
+    public void DrawCanvas(Vector2 uv)
     {
         PaintMat.SetVector("_MousePos", uv);
 
@@ -118,31 +162,17 @@ public class Painter : MonoBehaviour
         cmd.SetRenderTarget(PreviewTexture);
         cmd.ClearRenderTarget(true, true, Color.black);
         cmd.SetViewProjectionMatrices(Matrix4x4.identity, Matrix4x4.identity);
-        cmd.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, PaintMat, 0, 0);
+        cmd.Blit(null, PreviewTexture, PaintMat, 0);
         Graphics.ExecuteCommandBuffer(cmd);
 
-        // Peinture si le bouton est pressé
-        if (paintAction.action.ReadValue<float>() > 0.5f)
-        {
-            PaintMat.SetColor("_Color", color);
+        PaintMat.SetColor("_Color", color);
 
-            cmd.Clear();
-            cmd.SetRenderTarget(PaintTexture);
-            cmd.SetViewProjectionMatrices(Matrix4x4.identity, Matrix4x4.identity);
-            cmd.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, PaintMat, 0, 0);
-            Graphics.ExecuteCommandBuffer(cmd);
-        }
-
-        // Effacer la peinture si bouton clear pressé
-        if (clearAction.action.ReadValue<float>() > 0.5f)
-        {
-            cmd.Clear();
-            cmd.SetRenderTarget(PaintTexture);
-            cmd.ClearRenderTarget(true, true, Color.black);
-            Graphics.ExecuteCommandBuffer(cmd);
-
-            Graphics.Blit(defaultCircle, PaintTexture);
-        }
+        cmd.Clear();
+        cmd.SetRenderTarget(PaintTexture);
+        cmd.SetViewProjectionMatrices(Matrix4x4.identity, Matrix4x4.identity);
+        cmd.Blit(null, PaintTexture, PaintMat, 0);
+        Graphics.ExecuteCommandBuffer(cmd);
     }
+    
 }
 
