@@ -865,6 +865,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2247978625202224382, guid: 7a58914e4da21b940b643882e29fab73, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2247978625202224382, guid: 7a58914e4da21b940b643882e29fab73, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3922497694841738793, guid: 7a58914e4da21b940b643882e29fab73, type: 3}
       propertyPath: m_Name
       value: Quad
@@ -928,6 +936,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3922497694841738793, guid: 7a58914e4da21b940b643882e29fab73, type: 3}
       insertIndex: -1
       addedObject: {fileID: 771996930}
+    - targetCorrespondingSourceObject: {fileID: 3922497694841738793, guid: 7a58914e4da21b940b643882e29fab73, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 771996934}
   m_SourcePrefab: {fileID: 100100000, guid: 7a58914e4da21b940b643882e29fab73, type: 3}
 --- !u!33 &502247355 stripped
 MeshFilter:
@@ -1522,6 +1533,27 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!65 &771996934
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771996926}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0000001, y: 1, z: 0.01}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &787993218 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4853132211131340074, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
