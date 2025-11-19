@@ -1,8 +1,9 @@
-﻿using UnityEngine;
-using Unity.Services.Vivox;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
-using System.Threading.Tasks;
+using Unity.Services.Vivox;
+using UnityEngine;
 
 public class VivoxVoiceManager : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class VivoxVoiceManager : MonoBehaviour
     private bool isMuted;
 
     public string LocalDisplayName { get; private set; }
+    // --- Gestion des avatars fantômes pour les utilisateurs PC / spectateurs ---
+    private readonly Dictionary<string, GameObject> fakeAvatars = new Dictionary<string, GameObject>();
+    //fin ajout
 
     private async void Awake()
     {
@@ -32,6 +36,14 @@ public class VivoxVoiceManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        // ----- MODE SPECTATEUR PC (ÉDITEUR UNITY) -----
+        // Permet au PC de rejoindre Vivox même sans avatar
+        if (Application.isEditor)
+        {
+            Debug.Log("[Vivox] Mode spectateur PC : connexion Vivox sans XR.");
+            _ = AutoJoinVivoxPC();
+        }
+
 
         // IMPORTANT : attendre UGS + ton avatar local + ensuite Vivox
         await WaitForUGSReady();
@@ -179,8 +191,33 @@ public class VivoxVoiceManager : MonoBehaviour
                 return;
             }
         }
+        // Ne pas créer d'avatar fantôme pour l'utilisateur local
+        if (participant.IsSelf)
+        {
+            Debug.Log("[Vivox] Participant local → pas de fake avatar.");
+            return;
+        }
 
         Debug.LogWarning("[Vivox] Aucun avatar correspondant trouvé.");
+        // ------------------------------------------------------------
+        //  CRÉATION D’UN AVATAR FANTÔME (pour tests PC / pas d'avatar réel)
+        // ------------------------------------------------------------
+        if (!fakeAvatars.ContainsKey(participant.DisplayName))
+        {
+            Debug.LogWarning("[Vivox] → Création d’un avatar audio fantôme pour : " + participant.DisplayName);
+
+            GameObject ghost = new GameObject("FakeAvatar_" + participant.DisplayName);
+            ghost.transform.position = new Vector3(0, 1.7f, 0); // hauteur humaine par défaut
+
+            // Attacher la source audio Vivox
+            var voice = ghost.AddComponent<VoicePlayerAudio>();
+            voice.InitializeForParticipant(participant, ghost.transform);
+
+            fakeAvatars.Add(participant.DisplayName, ghost);
+
+            Debug.Log("[Vivox] ✔ Avatar fantôme créé et audio activé !");
+        }
+        //fin ajout
     }
 
     // --------------------
@@ -202,7 +239,14 @@ public class VivoxVoiceManager : MonoBehaviour
                 break;
             }
         }
-
+        // Suppression de l'avatar fantôme si existant
+        if (fakeAvatars.ContainsKey(participant.DisplayName))
+        {
+            Destroy(fakeAvatars[participant.DisplayName]);
+            fakeAvatars.Remove(participant.DisplayName);
+            Debug.Log("[Vivox] ✔ Avatar fantôme détruit.");
+        }
+        //in ajout
         participant.DestroyVivoxParticipantTap();
     }
 
@@ -214,4 +258,35 @@ public class VivoxVoiceManager : MonoBehaviour
         if (!joinedChannel) return;
         VivoxService.Instance.Set3DPosition(listenerObject, channelName, true);
     }
+    //Ajout pour PC fantome en mode spectateur
+    private async Task AutoJoinVivoxPC()
+    {
+        // Attendre initialisation Vivox (déjà faite dans Awake)
+        while (!vivoxInitialized)
+            await Task.Delay(200);
+
+        string pcName = "PCUser_" + Random.Range(1000, 9999);
+
+        var options = new LoginOptions { DisplayName = pcName };
+        await VivoxService.Instance.LoginAsync(options);
+
+        Debug.Log("[Vivox] ✔ PC connecté à Vivox en tant que : " + pcName);
+
+        // Canal vocal 3D
+        var props = new Channel3DProperties(
+            audibleDistance,
+            conversationalDistance,
+            fadeIntensity,
+            AudioFadeModel.InverseByDistance
+        );
+
+        await VivoxService.Instance.JoinPositionalChannelAsync(
+            channelName,
+            ChatCapability.AudioOnly,
+            props
+        );
+
+        Debug.Log("[Vivox] ✔ PC a rejoint le canal : " + channelName);
+    }
+
 }

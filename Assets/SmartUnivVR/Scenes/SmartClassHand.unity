@@ -883,7 +883,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6185977625749090164, guid: 7a58914e4da21b940b643882e29fab73, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.642
+      value: 1.688
       objectReference: {fileID: 0}
     - target: {fileID: 6185977625749090164, guid: 7a58914e4da21b940b643882e29fab73, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2841,21 +2841,25 @@ PrefabInstance:
       propertyPath: lineRenderer
       value: 
       objectReference: {fileID: 1289459008}
+    - target: {fileID: 3053893027269395743, guid: 672991d60c98bb946aea58dabac92148, type: 3}
+      propertyPath: defaultCircle
+      value: 
+      objectReference: {fileID: 2800000, guid: 0aa71ad5cf6e4ed4fb0b216a7c19b1e5, type: 3}
     - target: {fileID: 8225642969276610181, guid: 672991d60c98bb946aea58dabac92148, type: 3}
       propertyPath: m_Name
       value: Painter
       objectReference: {fileID: 0}
     - target: {fileID: 8448921991290052889, guid: 672991d60c98bb946aea58dabac92148, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 23.990894
+      value: 0.212
       objectReference: {fileID: 0}
     - target: {fileID: 8448921991290052889, guid: 672991d60c98bb946aea58dabac92148, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.02103
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 8448921991290052889, guid: 672991d60c98bb946aea58dabac92148, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 25.533962
+      value: -1.684
       objectReference: {fileID: 0}
     - target: {fileID: 8448921991290052889, guid: 672991d60c98bb946aea58dabac92148, type: 3}
       propertyPath: m_LocalRotation.w
