@@ -22,12 +22,9 @@ public class VivoxVoiceManager : MonoBehaviour
 
     public string LocalDisplayName { get; private set; }
 
-    // Avatars fantômes pour les utilisateurs sans avatar réel
-    private readonly Dictionary<string, GameObject> fakeAvatars = new();
-
     private async void Awake()
     {
-        if (Instance != this && Instance != null)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
@@ -41,7 +38,7 @@ public class VivoxVoiceManager : MonoBehaviour
         await InitializeVivoxOnly();
     }
 
-    // 1) Attendre UGS
+    // 1) Attendre que UGS soit prêt (Authentication OK)
     private async Task WaitForUGSReady()
     {
         while (UnityServices.State != ServicesInitializationState.Initialized ||
@@ -49,9 +46,11 @@ public class VivoxVoiceManager : MonoBehaviour
         {
             await Task.Delay(200);
         }
+
+        Debug.Log("[Vivox] UGS prêt, user signé.");
     }
 
-    // 2) Attendre avatar SI il existe → sinon continuer après timeout
+    // 2) Attendre un éventuel avatar local (pour les casques XR)
     private async Task WaitForLocalAvatarOrTimeout()
     {
         float timer = 0f;
@@ -67,7 +66,7 @@ public class VivoxVoiceManager : MonoBehaviour
             {
                 if (a.IsOwner)
                 {
-                    Debug.Log("[Vivox]  Avatar local trouvé !");
+                    Debug.Log("[Vivox] Avatar local trouvé, on peut démarrer Vivox.");
                     return;
                 }
             }
@@ -76,18 +75,20 @@ public class VivoxVoiceManager : MonoBehaviour
             timer += 0.2f;
         }
 
-        Debug.Log("[Vivox] Aucun avatar local trouvé (PC sans XR) → Vivox va fonctionner quand même.");
+        Debug.Log("[Vivox] Aucun avatar local trouvé (PC sans XR ?) → on continue quand même.");
     }
 
-    // 3) Initialiser Vivox
+    // 3) Initialisation Vivox seule
     private async Task InitializeVivoxOnly()
     {
         if (!vivoxInitialized)
         {
             await VivoxService.Instance.InitializeAsync();
             vivoxInitialized = true;
+            Debug.Log("[Vivox] Service initialisé.");
         }
 
+        // S’abonner aux events
         VivoxService.Instance.ParticipantAddedToChannel += OnParticipantAdded;
         VivoxService.Instance.ParticipantRemovedFromChannel += OnParticipantRemoved;
 
@@ -102,21 +103,20 @@ public class VivoxVoiceManager : MonoBehaviour
         VivoxService.Instance.UnmuteOutputDevice();
         VivoxService.Instance.SetOutputDeviceVolume(100);  // 0–100
 
-        Debug.Log("[Vivox] Input & Output activés, volumes = 100%");
-
+        Debug.Log("[Vivox] Input & Output activés, volumes = 100%.");
     }
 
     // 4) Login Vivox
     private async Task LoginVivox()
     {
-        LocalDisplayName = AuthenticationService.Instance.PlayerId; // au lieu de "User" + Random
+        // On utilise le PlayerId UGS comme identifiant/diplayName
+        LocalDisplayName = AuthenticationService.Instance.PlayerId;
 
         var options = new LoginOptions { DisplayName = LocalDisplayName };
         await VivoxService.Instance.LoginAsync(options);
 
         Debug.Log("[Vivox] Login OK : " + LocalDisplayName);
     }
-
 
     // 5) Joindre le canal 3D
     private async Task JoinChannel()
@@ -142,20 +142,22 @@ public class VivoxVoiceManager : MonoBehaviour
         Debug.Log("[Vivox] Canal rejoint : " + channelName);
     }
 
-    // 6) Participant ajouté
+    // 6) Participant ajouté dans un canal
     private void OnParticipantAdded(VivoxParticipant participant)
     {
-        Debug.Log($"[Vivox] Participant joint : {participant.DisplayName}");
+        Debug.Log($"[Vivox] Participant joint : {participant.DisplayName} (IsSelf={participant.IsSelf})");
 
-        //  Ignorer le participant local pour éviter l’écho
+        // IMPORTANT : ne jamais créer de TAP audio pour le local → évite
+        // que sa propre voix soit routée dans un AudioSource Unity.
         if (participant.IsSelf)
         {
-            participant.DestroyVivoxParticipantTap(); // IMPORTANT pour enlever ton propre retour
-            Debug.Log("[Vivox] Local participant → tap détruit (pas de retour sur soi).");
+            // Si Vivox a créé un TAP par défaut, on le détruit.
+            participant.DestroyVivoxParticipantTap();
+            Debug.Log("[Vivox] Local participant → TAP détruit (pas de retour sur soi).");
             return;
         }
 
-        // Créer un simple receveur audio global (pas d'avatar, pas de 3D pour l'instant)
+        // PARTICIPANT DISTANT → on crée son TAP audio
         GameObject audioRoot = GameObject.Find("VivoxAudioRoot");
         if (audioRoot == null)
         {
@@ -166,24 +168,29 @@ public class VivoxVoiceManager : MonoBehaviour
         var voice = audioRoot.AddComponent<VoicePlayerAudio>();
         voice.InitializeForParticipant(participant, audioRoot.transform);
 
-        Debug.Log("[Vivox] Tap audio attaché à VivoxAudioRoot pour " + participant.DisplayName);
+        Debug.Log("[Vivox] TAP audio attaché à VivoxAudioRoot pour " + participant.DisplayName);
     }
-
 
     // 7) Participant retiré
     private void OnParticipantRemoved(VivoxParticipant participant)
     {
+        Debug.Log($"[Vivox] Participant quitté : {participant.DisplayName} (IsSelf={participant.IsSelf})");
+
+        // Dans tous les cas on supprime le TAP associé
         participant.DestroyVivoxParticipantTap();
     }
 
-
-    // 8) Mise à jour position 3D du local
+    // 8) Mise à jour position 3D du local (pour le spatial 3D Vivox)
+    // Appeler ça depuis ton avatar local avec la tête / centre du joueur.
     public void UpdateLocal3DPosition(GameObject listenerObject)
     {
-        if (!joinedChannel) return;
+        if (!joinedChannel || listenerObject == null)
+            return;
+
         VivoxService.Instance.Set3DPosition(listenerObject, channelName, true);
     }
 }
+
 
 
 //using System.Collections.Generic;
