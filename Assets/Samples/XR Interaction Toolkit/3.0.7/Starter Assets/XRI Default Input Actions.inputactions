@@ -975,6 +975,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ButtonXOnly",
+                    "type": "Button",
+                    "id": "e146c79b-5ff9-4cd4-9191-7fcff5c4505f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1272,6 +1281,17 @@
                     "processors": "ScaleVector2(x=0),StickDeadzone",
                     "groups": "",
                     "action": "Translate Manipulation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "45cd3c6a-98d7-445f-989a-9117de1ff4da",
+                    "path": "<XRController>{LeftHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ButtonXOnly",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

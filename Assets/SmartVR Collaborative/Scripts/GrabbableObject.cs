@@ -75,6 +75,10 @@ public class GrabbableObject : NetworkBehaviour
 
         NetworkObject.ChangeOwnership(clientId);
         ApplyGrabState();
+
+        // Notifier tous les clients de forcer le release
+        ForceReleaseRpc(clientId);
+
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -83,9 +87,31 @@ public class GrabbableObject : NetworkBehaviour
         // serveur reprend
         NetworkObject.RemoveOwnership();
 
-        // déverrouiller
+        // déverrouiller AVANT notification
         isLocked.Value = false;
 
+        // notifier clients
+        ForceReleaseRpc(ulong.MaxValue);
+
         ApplyRestState();
+
     }
+    [Rpc(SendTo.Everyone)]
+    private void ForceReleaseRpc(ulong newOwnerId)
+    {
+        // si ce client n’est PAS le nouveau propriétaire
+        if (NetworkManager.Singleton.LocalClientId != newOwnerId)
+        {
+            var grab = GetComponent<MultiplayerGrabInteractable>();
+            if (grab != null && grab.isSelected)
+            {
+                foreach (var interactor in grab.interactorsSelecting)
+                {
+                    grab.interactionManager.SelectExit(interactor, grab);
+                }
+            }
+        }
+    }
+
+
 }
