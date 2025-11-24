@@ -92,8 +92,9 @@ public class Painter : MonoBehaviour
             Vector3 local = Quad.transform.InverseTransformPoint(hitInfo.point);
 
             // Normalisation en fonction de la scale du Quad
-            float uvx = (local.x / Quad.transform.localScale.x) + 0.5f;
-            float uvy = (local.y / Quad.transform.localScale.y) + 0.5f;
+            float uvx = local.x + 0.5f;
+            float uvy = local.y + 0.5f;
+
 
             // UV final
             Vector2 uv = new Vector2(uvx, uvy);

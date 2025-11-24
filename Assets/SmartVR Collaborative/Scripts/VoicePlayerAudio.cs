@@ -18,23 +18,37 @@ public class VoicePlayerAudio : MonoBehaviour
         ParticipantName = participant.DisplayName;
         audioAttachPoint = attachPoint;
 
-        // Crée l'objet audio Vivox (le "tap")
         GameObject go = participant.CreateVivoxParticipantTap("VivoxAudio_" + ParticipantName);
+
+        if (go == null)
+        {
+            Debug.LogError("[VoicePlayerAudio] ❌ TAP GO est NULL !");
+            return;
+        }
 
         vivoxAudioSource = go.GetComponent<AudioSource>();
 
-        if (vivoxAudioSource != null)
+        if (vivoxAudioSource == null)
         {
-            vivoxAudioSource.spatialBlend = 1f;   // 3D audio
-            vivoxAudioSource.rolloffMode = AudioRolloffMode.Logarithmic;
-            vivoxAudioSource.minDistance = 0.8f;
-            vivoxAudioSource.maxDistance = 20f;
+            // Vivox place parfois l'AudioSource dans un enfant
+            vivoxAudioSource = go.GetComponentInChildren<AudioSource>();
         }
-        else
+
+        if (vivoxAudioSource == null)
         {
-            Debug.LogWarning("[VoicePlayerAudio] Aucun AudioSource trouvé dans VivoxParticipantTap !");
+            Debug.LogError("[VoicePlayerAudio] ❌ Aucun AudioSource trouvé dans le TAP !");
+            return;
         }
+
+        // Config audio
+        vivoxAudioSource.spatialBlend = 0f;  // On mettra 3D après debug
+        vivoxAudioSource.rolloffMode = AudioRolloffMode.Linear;
+        vivoxAudioSource.minDistance = 1f;
+        vivoxAudioSource.maxDistance = 25f;
+
+        Debug.Log("[VoicePlayerAudio] ✔ TAP OK pour " + ParticipantName);
     }
+
 
     private void LateUpdate()
     {
