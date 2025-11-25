@@ -1,19 +1,22 @@
-﻿using Unity.Netcode;
+﻿using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class GrabbableObject : NetworkBehaviour
 {
-    private Rigidbody rb;
-
-    // verrouillage anti-double grab
+    // verrou réseau
     private NetworkVariable<bool> isLocked = new NetworkVariable<bool>(
         false,
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Server
     );
 
+    private Rigidbody rb;
     private MultiplayerGrabInteractable xri;
+
+    public bool IsLocked => isLocked.Value;
 
     private void Awake()
     {
@@ -21,37 +24,47 @@ public class GrabbableObject : NetworkBehaviour
         xri = GetComponent<MultiplayerGrabInteractable>();
     }
 
+    // ------------------------------------------------------
+    //  AU SPAWN RESEAU (OBJETS DEJA DANS LA SCÈNE INCLUS)
+    // ------------------------------------------------------
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
+        // Le serveur prend l’ownership si personne ne l’a.
+        if (IsServer)
+        {
+            if (!NetworkObject.IsOwnedByServer)
+            {
+                NetworkObject.ChangeOwnership(NetworkManager.ServerClientId);
+            }
+        }
+
         ApplyRestState();
     }
 
-    public override void OnGainedOwnership()
-    {
-        base.OnGainedOwnership();
-        ApplyGrabState();
-    }
-
-    public override void OnLostOwnership()
-    {
-        base.OnLostOwnership();
-        ApplyRestState();
-    }
-
+    // ------------------------------------------------------
+    //  ETATS PHYSIQUES
+    // ------------------------------------------------------
     private void ApplyRestState()
     {
-        rb.isKinematic = true;
-        rb.useGravity = false;
+        if (rb == null) return;
+
+        rb.isKinematic = false;     // physique active
+        rb.useGravity = true;       // gravité active
     }
 
     private void ApplyGrabState()
     {
+        if (rb == null) return;
+
         rb.isKinematic = false;
         rb.useGravity = false;
     }
 
-    // appelé par le client
+    // ------------------------------------------------------
+    //  APPELS COTÉ CLIENT
+    // ------------------------------------------------------
     public void ClientRequestGrab(ulong clientId)
     {
         TryGrabRpc(clientId);
@@ -62,58 +75,63 @@ public class GrabbableObject : NetworkBehaviour
         ReleaseRpc();
     }
 
-    // ----------------- SERVER RPC ---------------------
-
+    // ------------------------------------------------------
+    //  RPC SERVEUR
+    // ------------------------------------------------------
     [Rpc(SendTo.Server)]
     private void TryGrabRpc(ulong clientId)
     {
-        // déjà pris ?
-        if (isLocked.Value)
+        if (isLocked.Value && NetworkObject.OwnerClientId != clientId)
         {
-            // refuse
-            ForceReleaseRpc(ulong.MaxValue);
+            // Refuse officiellement, sans modifier l'état de l'objet
+            ForceReleaseRpc(NetworkObject.OwnerClientId);
             return;
         }
 
-        // verrouille
+
         isLocked.Value = true;
 
-        // transfert de propriété
         NetworkObject.ChangeOwnership(clientId);
 
-        // informe tous les autres : relachez tout !
+        ApplyGrabState();
+
         ForceReleaseRpc(clientId);
     }
 
     [Rpc(SendTo.Server)]
     private void ReleaseRpc()
     {
-        // serveur reprend la propriété
-        NetworkObject.RemoveOwnership();
+        if (!isLocked.Value)
+            return;
 
-        // déverrouille
         isLocked.Value = false;
 
-        // forcer relâchement partout
+        NetworkObject.RemoveOwnership();
+
         ForceReleaseRpc(ulong.MaxValue);
+
+        ApplyRestState();
     }
 
-    // ---------------- CLIENT RPC ----------------------
-
+    // ------------------------------------------------------
+    //  RPC CLIENTS
+    // ------------------------------------------------------
     [Rpc(SendTo.Everyone)]
-    private void ForceReleaseRpc(ulong newOwner)
+    private void ForceReleaseRpc(ulong newOwnerId)
     {
-        // si CE client n’est PAS le nouveau propriétaire
-        if (NetworkManager.Singleton.LocalClientId != newOwner)
+        if (NetworkManager.Singleton.LocalClientId != newOwnerId)
         {
-            // force le XRI à relâcher immédiatement
-            if (xri != null && xri.isSelected)
+            if (xri != null && xri.isSelected && xri.interactionManager != null)
             {
-                foreach (var interactor in xri.interactorsSelecting)
+                // On copie AVANT de parcourir
+                var listCopy = new List<IXRSelectInteractor>(xri.interactorsSelecting);
+
+                foreach (var interactor in listCopy)
                 {
                     xri.interactionManager.SelectExit(interactor, xri);
                 }
             }
         }
     }
+
 }

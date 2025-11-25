@@ -1,4 +1,4 @@
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
@@ -16,23 +16,45 @@ public class MultiplayerGrabInteractable : XRGrabInteractable
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
-        base.OnSelectEntered(args);
-
-        // si le client est r�seau
         if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsConnectedClient)
         {
-            ulong id = NetworkManager.Singleton.LocalClientId;
-            grabbable.ClientRequestGrab(id);
+            ulong localId = NetworkManager.Singleton.LocalClientId;
+
+            // Empêche un deuxième joueur de prendre l'objet
+            if (grabbable.IsLocked && grabbable.NetworkObject.OwnerClientId != localId)
+            {
+                if (interactionManager != null)
+                {
+                    interactionManager.SelectExit(args.interactorObject, this);
+                }
+                return;
+            }
+
+            // Grab local normal
+            base.OnSelectEntered(args);
+
+            // Demande au serveur d'attribuer l'ownership
+            grabbable.ClientRequestGrab(localId);
+        }
+        else
+        {
+            // Mode hors réseau
+            base.OnSelectEntered(args);
         }
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
-        base.OnSelectExited(args);
-
         if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsConnectedClient)
         {
+            base.OnSelectExited(args);
+
+            // Relâche proprement côté serveur
             grabbable.ClientRequestRelease();
+        }
+        else
+        {
+            base.OnSelectExited(args);
         }
     }
 }

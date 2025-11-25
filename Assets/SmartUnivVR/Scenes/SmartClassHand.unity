@@ -1337,7 +1337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 0
+  UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
 --- !u!114 &520515009
@@ -1537,11 +1537,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_UseGravity
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_Interpolate
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_CollisionDetection
@@ -1785,7 +1789,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8679826519995154921, guid: 8492d690523edc941a1a39d1798c93bc, type: 3}
       propertyPath: m_UseGravity
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8679826519995154921, guid: 8492d690523edc941a1a39d1798c93bc, type: 3}
       propertyPath: m_Interpolate
@@ -1793,7 +1797,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8679826519995154921, guid: 8492d690523edc941a1a39d1798c93bc, type: 3}
       propertyPath: m_IsKinematic
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8679826519995154921, guid: 8492d690523edc941a1a39d1798c93bc, type: 3}
       propertyPath: m_CollisionDetection
@@ -1927,11 +1931,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_UseGravity
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_Interpolate
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_CollisionDetection
@@ -2608,7 +2616,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 0
+  UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
 --- !u!114 &876028645
@@ -2744,11 +2752,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6186494263547506647, guid: 29b3cd5b2bbcbe94b868885d6ad118ae, type: 3}
       propertyPath: m_UseGravity
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6186494263547506647, guid: 29b3cd5b2bbcbe94b868885d6ad118ae, type: 3}
       propertyPath: m_Interpolate
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6186494263547506647, guid: 29b3cd5b2bbcbe94b868885d6ad118ae, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6186494263547506647, guid: 29b3cd5b2bbcbe94b868885d6ad118ae, type: 3}
       propertyPath: m_CollisionDetection
@@ -3229,7 +3241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 0
+  UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
 --- !u!114 &1008827120
@@ -4146,7 +4158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 0
+  UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
 --- !u!114 &1323117781
@@ -4352,11 +4364,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7812889851479609662, guid: 430ec275865c7a4499a6f521d7369aff, type: 3}
       propertyPath: m_UseGravity
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7812889851479609662, guid: 430ec275865c7a4499a6f521d7369aff, type: 3}
       propertyPath: m_Interpolate
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812889851479609662, guid: 430ec275865c7a4499a6f521d7369aff, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7812889851479609662, guid: 430ec275865c7a4499a6f521d7369aff, type: 3}
       propertyPath: m_CollisionDetection
@@ -4612,7 +4628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 0
+  UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
 --- !u!1 &1419217349
@@ -5103,7 +5119,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8679826519995154921, guid: bc029b80d6e452544871a7f35d86a032, type: 3}
       propertyPath: m_UseGravity
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8679826519995154921, guid: bc029b80d6e452544871a7f35d86a032, type: 3}
       propertyPath: m_Interpolate
@@ -5111,7 +5127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8679826519995154921, guid: bc029b80d6e452544871a7f35d86a032, type: 3}
       propertyPath: m_IsKinematic
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8679826519995154921, guid: bc029b80d6e452544871a7f35d86a032, type: 3}
       propertyPath: m_CollisionDetection
@@ -5212,11 +5228,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9160321152421653418, guid: ca3920c15e2f4a6468e358111ad59686, type: 3}
       propertyPath: m_UseGravity
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9160321152421653418, guid: ca3920c15e2f4a6468e358111ad59686, type: 3}
       propertyPath: m_Interpolate
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9160321152421653418, guid: ca3920c15e2f4a6468e358111ad59686, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9160321152421653418, guid: ca3920c15e2f4a6468e358111ad59686, type: 3}
       propertyPath: m_CollisionDetection
@@ -5268,7 +5288,7 @@ MonoBehaviour:
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 4
-  AlwaysReplicateAsRoot: 0
+  AlwaysReplicateAsRoot: 1
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 0
@@ -5291,7 +5311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 0
+  UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
 --- !u!114 &1577143147
@@ -5352,7 +5372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d35d2f31f0d7914c87a6147a90fe211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_InteractionManager: {fileID: 0}
+  m_InteractionManager: {fileID: 7578513822832117758}
   m_Colliders: []
   m_InteractionLayers:
     m_Bits: 1
@@ -6052,7 +6072,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 0
+  UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
 --- !u!114 &1674562235
@@ -7212,7 +7232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 0
+  UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
 --- !u!114 &1841357717
@@ -7415,7 +7435,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_UseGravity
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_Interpolate
@@ -7423,7 +7443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_IsKinematic
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_CollisionDetection
@@ -7690,7 +7710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 0
+  UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
 --- !u!114 &1895688800
@@ -7757,11 +7777,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_UseGravity
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_Interpolate
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076412110475302732, guid: f0b56f8ad893614438fcce027fa1aec0, type: 3}
       propertyPath: m_CollisionDetection
