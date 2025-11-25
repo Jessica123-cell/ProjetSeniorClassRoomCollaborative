@@ -14,27 +14,25 @@ public class MultiplayerGrabInteractable : XRGrabInteractable
         grabbable = GetComponent<GrabbableObject>();
     }
 
-    // Quand un joueur attrape l'objet
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
         base.OnSelectEntered(args);
 
-        // vérifie que le client est bien en réseau
+        // si le client est réseau
         if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsConnectedClient)
         {
-            ulong localId = NetworkManager.Singleton.LocalClientId;
-            grabbable.OnGrab(localId);
+            ulong id = NetworkManager.Singleton.LocalClientId;
+            grabbable.ClientRequestGrab(id);
         }
     }
 
-    // Quand un joueur relâche l'objet
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
 
         if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsConnectedClient)
         {
-            grabbable.OnRelease();
+            grabbable.ClientRequestRelease();
         }
     }
 }

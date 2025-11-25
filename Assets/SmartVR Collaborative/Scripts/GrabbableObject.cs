@@ -1,20 +1,24 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class GrabbableObject : NetworkBehaviour
 {
     private Rigidbody rb;
 
-    // Verrou réseau (anti-double grab)
+    // verrouillage anti-double grab
     private NetworkVariable<bool> isLocked = new NetworkVariable<bool>(
-        false,                                     // initial value
-        NetworkVariableReadPermission.Everyone,    // everyone can read
-        NetworkVariableWritePermission.Server      // only server writes
+        false,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Server
     );
+
+    private MultiplayerGrabInteractable xri;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        xri = GetComponent<MultiplayerGrabInteractable>();
     }
 
     public override void OnNetworkSpawn()
@@ -35,8 +39,6 @@ public class GrabbableObject : NetworkBehaviour
         ApplyRestState();
     }
 
-    // --- ETATS PHYSIQUES ---
-
     private void ApplyRestState()
     {
         rb.isKinematic = true;
@@ -49,69 +51,69 @@ public class GrabbableObject : NetworkBehaviour
         rb.useGravity = false;
     }
 
-    // --- EVENEMENTS LOCAUX ---
-
-    public void OnGrab(ulong clientId)
+    // appelé par le client
+    public void ClientRequestGrab(ulong clientId)
     {
         TryGrabRpc(clientId);
     }
 
-    public void OnRelease()
+    public void ClientRequestRelease()
     {
         ReleaseRpc();
     }
 
-    // --- RPC SERVEUR ---
+    // ----------------- SERVER RPC ---------------------
 
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    [Rpc(SendTo.Server)]
     private void TryGrabRpc(ulong clientId)
     {
         // déjà pris ?
         if (isLocked.Value)
+        {
+            // refuse
+            ForceReleaseRpc(ulong.MaxValue);
             return;
+        }
 
-        // verrouiller
+        // verrouille
         isLocked.Value = true;
 
+        // transfert de propriété
         NetworkObject.ChangeOwnership(clientId);
-        ApplyGrabState();
 
-        // Notifier tous les clients de forcer le release
+        // informe tous les autres : relachez tout !
         ForceReleaseRpc(clientId);
-
     }
 
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    [Rpc(SendTo.Server)]
     private void ReleaseRpc()
     {
-        // serveur reprend
+        // serveur reprend la propriété
         NetworkObject.RemoveOwnership();
 
-        // déverrouiller AVANT notification
+        // déverrouille
         isLocked.Value = false;
 
-        // notifier clients
+        // forcer relâchement partout
         ForceReleaseRpc(ulong.MaxValue);
-
-        ApplyRestState();
-
     }
+
+    // ---------------- CLIENT RPC ----------------------
+
     [Rpc(SendTo.Everyone)]
-    private void ForceReleaseRpc(ulong newOwnerId)
+    private void ForceReleaseRpc(ulong newOwner)
     {
-        // si ce client n’est PAS le nouveau propriétaire
-        if (NetworkManager.Singleton.LocalClientId != newOwnerId)
+        // si CE client n’est PAS le nouveau propriétaire
+        if (NetworkManager.Singleton.LocalClientId != newOwner)
         {
-            var grab = GetComponent<MultiplayerGrabInteractable>();
-            if (grab != null && grab.isSelected)
+            // force le XRI à relâcher immédiatement
+            if (xri != null && xri.isSelected)
             {
-                foreach (var interactor in grab.interactorsSelecting)
+                foreach (var interactor in xri.interactorsSelecting)
                 {
-                    grab.interactionManager.SelectExit(interactor, grab);
+                    xri.interactionManager.SelectExit(interactor, xri);
                 }
             }
         }
     }
-
-
 }
