@@ -19,11 +19,13 @@ public class MainScreenController : MonoBehaviour
         }
 
         // Vérifier si le joueur est enseignant
-        bool isTeacher = player.CurrentRole == Role.Teacher;
+        bool isTeacher = player.IsTeacher;
 
         // Seul le professeur peut cliquer les boutons
         nextPageBTN.interactable = isTeacher;
         prevPageBTN.interactable = isTeacher;
+
+        Debug.Log("[MainScreenController] Buttons enabled = " + isTeacher);
     }
 
     public void NextPage()
@@ -36,4 +38,5 @@ public class MainScreenController : MonoBehaviour
         SmartUnivManager.instance.OnPrevPage();
     }
 }
+
 
