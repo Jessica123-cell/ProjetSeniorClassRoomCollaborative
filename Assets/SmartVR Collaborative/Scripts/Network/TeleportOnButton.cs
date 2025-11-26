@@ -1,12 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.XR.CoreUtils; // Pour XROrigin
+using Unity.XR.CoreUtils;
 
 public class TeleportOnButtonX : MonoBehaviour
 {
-    [Header("Teleport Points")]
-    public Transform teleportAnchor;   // Zone spéciale
-    public Transform spawnPoint;       // Position d'apparition du joueur
+    [Header("Teleport Points (Teacher)")]
+    public Transform teacherPoint1;
+    public Transform teacherPoint2;
+    public Transform teacherPoint3;
+
+    [Header("Teleport Points (Student)")]
+    public Transform studentPoint1;
+    public Transform studentPoint2;
 
     [Header("XR Origin")]
     public XROrigin xrOrigin;
@@ -14,7 +19,7 @@ public class TeleportOnButtonX : MonoBehaviour
     [Header("Input Action (Button X)")]
     public InputActionProperty xButtonAction;
 
-    private bool isAtAnchor = false;   // Toggle
+    private int currentIndex = 0;
 
     private void OnEnable()
     {
@@ -32,38 +37,60 @@ public class TeleportOnButtonX : MonoBehaviour
     {
         if (xButtonAction != null && xButtonAction.action.WasPressedThisFrame())
         {
-            ToggleTeleport();
+            TeleportNext();
         }
     }
 
-    private void ToggleTeleport()
+    private void TeleportNext()
     {
-        if (xrOrigin == null || teleportAnchor == null || spawnPoint == null)
+        if (xrOrigin == null)
         {
-            Debug.LogWarning("Assign XR Origin, TeleportAnchor et SpawnPoint !");
+            Debug.LogWarning("XR Origin non assigné !");
             return;
         }
 
-        if (!isAtAnchor)
+        // --- RÉCUPÉRER LE RÔLE ---
+        var roleMgr = PlayerRoleManager.LocalPlayer;
+        if (roleMgr == null)
         {
-            // Va vers l'anchor
-            TeleportTo(teleportAnchor);
-            isAtAnchor = true;
+            Debug.LogWarning("PlayerRoleManager.LocalPlayer introuvable !");
+            return;
+        }
+
+        bool isTeacher = roleMgr.IsTeacher;
+
+        // --- LISTE DES POINTS SELON LE RÔLE ---
+        Transform[] points;
+
+        if (isTeacher)
+        {
+            points = new Transform[] { teacherPoint1, teacherPoint2, teacherPoint3 };
         }
         else
         {
-            // Retourne au spawn
-            TeleportTo(spawnPoint);
-            isAtAnchor = false;
+            points = new Transform[] { studentPoint1, studentPoint2 };
         }
+
+        // Sécurité : vérifier que les points existent
+        if (points.Length == 0 || points[currentIndex] == null)
+        {
+            Debug.LogWarning("Points de téléportation non assignés !");
+            return;
+        }
+
+        Transform target = points[currentIndex];
+
+        TeleportTo(target);
+
+        // Passe au point suivant
+        currentIndex = (currentIndex + 1) % points.Length;
     }
 
     private void TeleportTo(Transform target)
     {
-        // --- Déplace ---
         xrOrigin.MoveCameraToWorldLocation(target.position);
 
-        // --- Oriente horizontalement ---
+        // Orientation horizontale seulement
         Vector3 forward = target.forward;
         forward.y = 0f;
         forward.Normalize();
