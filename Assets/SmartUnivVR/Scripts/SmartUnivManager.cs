@@ -59,9 +59,11 @@ public class SmartUnivManager : MonoBehaviour
     {
         pageIndex++;
 
-        if (pageIndex > activeDocument.documentPages.Length)
+        if (pageIndex >= activeDocument.documentPages.Length)
         {
-            pageIndex = activeDocument.documentPages.Length;
+            pageIndex = activeDocument.documentPages.Length - 1;
+            //j'ai rajouté ce return pour éviter un bug d'index
+            return;
         }
         else
         {
@@ -76,6 +78,8 @@ public class SmartUnivManager : MonoBehaviour
         if (pageIndex < 0)
         {
             pageIndex = 0;
+            //j'ai rajouté ce return pour éviter un bug d'index
+            return;
         }
         else
         {
