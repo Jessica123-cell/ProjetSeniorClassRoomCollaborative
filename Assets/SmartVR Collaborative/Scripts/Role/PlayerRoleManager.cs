@@ -26,23 +26,50 @@ public class PlayerRoleManager : NetworkBehaviour
     private void OnRoleChanged(Role oldRole, Role newRole)
     {
         Debug.Log($"[ROLE] Role changed: {oldRole} → {newRole}");
+
+        if (!IsOwner)
+            return;
+
+        // Mise à jour de l’UI Teacher
+        UpdateTeacherPanel();
     }
 
     public override void OnNetworkSpawn()
     {
         if (IsOwner)
-            StartCoroutine(DelayedMenu());
+            StartCoroutine(DelayedStartup());
     }
 
-    private IEnumerator DelayedMenu()
+    private IEnumerator DelayedStartup()
     {
-        yield return null;
+        // Petite attente : XR Rig + UI doivent être instanciés
+        yield return new WaitForSeconds(0.3f);
+
+        // Affiche le menu de sélection de rôle
         ShowRoleMenu();
+
+        // Affiche le panel Teacher si nécessaire
+        UpdateTeacherPanel();
+    }
+
+    private void UpdateTeacherPanel()
+    {
+        var teacherUI = FindAnyObjectByType<TeacherAudioUI>(FindObjectsInactive.Include);
+
+        if (teacherUI != null)
+        {
+            teacherUI.ShowIfTeacher(IsTeacher);
+            Debug.Log("[ROLE] TeacherPanel visible = " + IsTeacher);
+        }
+        else
+        {
+            Debug.LogWarning("[ROLE] TeacherAudioUI introuvable !");
+        }
     }
 
     private void ShowRoleMenu()
     {
-        var menu = Object.FindAnyObjectByType<RoleSelectionUI>(FindObjectsInactive.Include);
+        var menu = FindAnyObjectByType<RoleSelectionUI>(FindObjectsInactive.Include);
 
         if (menu != null)
             menu.gameObject.SetActive(true);
