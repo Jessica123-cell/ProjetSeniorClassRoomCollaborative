@@ -92,7 +92,13 @@ public class PlayerSpawner : NetworkBehaviour
         {
             Debug.Log($"Participant {clientId} connecté.");
         }
+        var client = NetworkManager.Singleton.ConnectedClients[clientId];
 
+        if (client.PlayerObject != null)
+        {
+            Debug.Log("[PlayerSpawner] Le client a déjà un PlayerObject → skip");
+            return;
+        }
         // --- SPAWN AVATAR ---
         GameObject avatar = Instantiate(
             avatarPrefab,

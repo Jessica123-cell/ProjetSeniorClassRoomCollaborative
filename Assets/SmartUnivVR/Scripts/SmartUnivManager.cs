@@ -98,4 +98,11 @@ public class SmartUnivManager : MonoBehaviour
         if (pageIndexText)
             pageIndexText.text = index.ToString();
     }
+    public void ForceSetPage(int index)
+    {
+        pageIndex = index;
+        SetNewPage(index);
+        SetNewPageIndexText(index + 1);
+    }
+
 }

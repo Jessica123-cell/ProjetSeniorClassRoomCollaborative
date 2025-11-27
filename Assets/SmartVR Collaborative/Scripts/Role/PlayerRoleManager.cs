@@ -76,6 +76,7 @@ public class PlayerRoleManager : NetworkBehaviour
         else
             Debug.LogWarning("[ROLE] Aucun RoleSelectionUI trouvé !");
     }
+    public bool RoleIsInitialized { get; private set; } = false;
 
     public void SetRole(Role newRole)
     {
@@ -83,6 +84,8 @@ public class PlayerRoleManager : NetworkBehaviour
             PlayerRole.Value = newRole;
         else
             SetRoleServerRpc(newRole);
+        RoleIsInitialized = true;
+
     }
 
     [ServerRpc]

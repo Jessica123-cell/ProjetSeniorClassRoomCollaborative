@@ -90,11 +90,31 @@ public class InteractiveTablet : MonoBehaviour
 
     private void SetNewPage(int pageIndex)
     {
+        if (pageIndex < 0 || pageIndex >= document.documentPages.Length)
+            return; // Sécurité en plus
+
         if (document.documentPages[pageIndex])
             documentDisplayIMG.texture = document.documentPages[pageIndex];
     }
     private void SetNewPageIndexText(int index)
     {
         pageIndexText.text = index.ToString();
+    }
+    public void ForceSetPage(int index)
+    {
+        // Empêche dépassement haut / bas
+        if (index < 0) index = 0;
+        if (index >= document.documentPages.Length)
+            index = document.documentPages.Length - 1;
+
+        pageIndex = index;
+
+        SetNewPage(index);
+        SetNewPageIndexText(index + 1);
+    }
+
+    public int GetCurrentPageIndex()
+    {
+        return pageIndex;
     }
 }

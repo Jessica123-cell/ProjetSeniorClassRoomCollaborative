@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
 public class MainScreenController : MonoBehaviour
@@ -9,32 +9,43 @@ public class MainScreenController : MonoBehaviour
 
     void Start()
     {
-        // Récupérer le joueur local
-        var player = PlayerRoleManager.LocalPlayer;
+        StartCoroutine(WaitForRole());
+    }
 
-        if (player == null)
-        {
-            Debug.LogWarning("[MainScreenController] LocalPlayer is NULL at Start!");
-            return;
-        }
+    private System.Collections.IEnumerator WaitForRole()
+    {
+        //  Attendre que LocalPlayer soit prÃªt
+        while (PlayerRoleManager.LocalPlayer == null)
+            yield return null;
 
-        // Vérifier si le joueur est enseignant
-        bool isTeacher = player.IsTeacher;
+        //  Attendre que le rÃ´le soit choisi
+        while (!PlayerRoleManager.LocalPlayer.RoleIsInitialized)
+            yield return null;
 
-        // Seul le professeur peut cliquer les boutons
+        // Appliquer les permissions
+        bool isTeacher = PlayerRoleManager.LocalPlayer.IsTeacher;
         nextPageBTN.interactable = isTeacher;
         prevPageBTN.interactable = isTeacher;
+
+        // (optionnel mais propre : cacher complÃ¨tement)
+        nextPageBTN.gameObject.SetActive(isTeacher);
+        prevPageBTN.gameObject.SetActive(isTeacher);
 
         Debug.Log("[MainScreenController] Buttons enabled = " + isTeacher);
     }
 
+
     public void NextPage()
     {
+        if (!PlayerRoleManager.LocalPlayer.IsTeacher)
+            return; // Bloque les students
         SmartUnivManager.instance.OnNextPage();
     }
 
     public void PrevPage()
     {
+        if (!PlayerRoleManager.LocalPlayer.IsTeacher)
+            return; //  Bloque les students
         SmartUnivManager.instance.OnPrevPage();
     }
 }
