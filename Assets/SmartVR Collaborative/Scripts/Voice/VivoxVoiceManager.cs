@@ -35,6 +35,7 @@ public class VivoxVoiceManager : MonoBehaviour
 
         await WaitForUGSReady();
         await WaitForLocalAvatarOrTimeout();
+        await WaitForMicrophonePermission();
         await InitializeVivoxOnly();
     }
 
@@ -76,6 +77,29 @@ public class VivoxVoiceManager : MonoBehaviour
         }
 
         Debug.Log("[Vivox] Aucun avatar local trouvé (PC sans XR ?) → on continue quand même.");
+    }
+    private async Task WaitForMicrophonePermission()
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+    // Si déjà autorisé → go
+    if (UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.Microphone))
+        return;
+
+    Debug.Log("[Vivox] En attente de la permission micro…");
+
+    // Demander la permission
+    UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.Microphone);
+
+    // Attendre jusqu’à ce que l'utilisateur choisisse
+    while (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.Microphone))
+    {
+        await Task.Delay(200);
+    }
+
+    Debug.Log("[Vivox] Permission micro accordée !");
+#else
+        await Task.Yield();
+#endif
     }
 
     // 3) Initialisation Vivox seule
