@@ -104,7 +104,10 @@ public class TeacherAudioUI : MonoBehaviour
         }
 
         // Nom du joueur
-        ui.nameText.text = "Player " + clientId;
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+            ui.nameText.text = $"Player {clientId} (YOU)";
+        else
+            ui.nameText.text = $"Player {clientId}";
 
         // MUTER
         ui.muteButton.onClick.AddListener(() =>
