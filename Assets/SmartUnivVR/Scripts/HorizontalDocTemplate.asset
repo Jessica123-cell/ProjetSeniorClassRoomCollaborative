@@ -15,11 +15,6 @@ MonoBehaviour:
   documentName: PresentationPowerPoint
   documentOrientation: 1
   documentPages:
-  - {fileID: 2800000, guid: 7b3e29572f65d0f4cac1c8f8c1fa7226, type: 3}
-  - {fileID: 2800000, guid: 091e32dc4d1fb9648a5bac015d08cb46, type: 3}
-  - {fileID: 2800000, guid: 0c05dcfebb67eab42b6f324d6b9f99e7, type: 3}
-  - {fileID: 2800000, guid: 1b296f25e7b401348a34816e6c3cbb5e, type: 3}
-  - {fileID: 2800000, guid: 720bea1d5f05c034d80344262452fe04, type: 3}
   - {fileID: 2800000, guid: c907beab49ceb6347a89d868ecbd29d1, type: 3}
   - {fileID: 2800000, guid: a0d085e4c4241994b8eba7183fdf7d21, type: 3}
   - {fileID: 2800000, guid: 0b01f69af08f7ab4d979c2d35ac5ade9, type: 3}
